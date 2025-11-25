@@ -2,10 +2,7 @@
 import { defineStore } from 'pinia'
 import api from '../plugins/axios'
 
-interface LoginPayload {
-  username: string
-  password: string
-}
+
 
 interface User {
   id: number

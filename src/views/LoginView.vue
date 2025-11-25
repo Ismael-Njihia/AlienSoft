@@ -25,10 +25,9 @@ const handleLogin = async ()=> {
         } else {
             error.value = "Invalid credentials. Please try again.";
         }
-    } catch (error) {
-        console.error("Login error:", error);
-        error.value = "An error occurred during login. Please try again later.";
-        
+    } catch (err: any) {
+        console.error("Login error:", err);
+        error.value = err?.message || "An error occurred during login. Please try again later.";
     }
 }
 

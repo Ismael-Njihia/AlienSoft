@@ -1,8 +1,7 @@
 
 import { defineStore } from 'pinia'
 import api from '../plugins/axios'
-import axios from 'axios'
-import { useAuthStore } from './auth'
+
 
 // Define a Product interface
 export interface Product {
@@ -15,12 +14,6 @@ export interface Product {
   thumbnail: string
   rating?: number
   discountPercentage?: number
-}
-
-interface ProductState {
-  products: Product[]
-  isLoading: boolean
-  error: string | null
 }
 
 export const useProductStore = defineStore('product', {
