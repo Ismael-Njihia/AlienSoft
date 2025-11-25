@@ -1,6 +1,6 @@
 // src/stores/auth.ts
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import api from '../plugins/axios'
 
 interface LoginPayload {
   username: string
@@ -20,8 +20,8 @@ interface AuthState {
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
-    token: null,
-    user: null
+    token: localStorage.getItem('token'), 
+    user: JSON.parse(localStorage.getItem('user') || 'null'),
   }),
   getters: {
     isAuthenticated: (state) => !!state.token
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(payload: { username: string; password: string }): Promise<boolean> {
       try {
-        const res = await axios.post("https://dummyjson.com/auth/login", payload);
+        const res = await api.post("/auth/login", payload);
         
         // Save token and user properly
         this.token = res.data.token || res.data.accessToken; // <- fallback to accessToken
@@ -51,10 +51,5 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
     },
-    restoreSession() {
-      this.token = localStorage.getItem('token')
-      const userData = localStorage.getItem('user')
-      this.user = userData ? JSON.parse(userData) : null
-    }
   }
 })

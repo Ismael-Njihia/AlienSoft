@@ -71,7 +71,7 @@ const filteredList = computed(() => {
     }
 
 const goToAddProduct = () => {
-  router.push("/products/add");
+  router.push("/products/new");
 };
 
 const viewProduct = id => {

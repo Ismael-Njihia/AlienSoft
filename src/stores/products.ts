@@ -1,5 +1,6 @@
 
 import { defineStore } from 'pinia'
+import api from '../plugins/axios'
 import axios from 'axios'
 import { useAuthStore } from './auth'
 
@@ -32,28 +33,20 @@ export const useProductStore = defineStore('product', {
     error: null as string | null,
   }),
   actions: {
-    async fetchProducts(): Promise<void> {
-        this.isLoading = true
-        const auth = useAuthStore()
+      async fetchProducts(): Promise<void> {
+        this.isLoading = true;
 
-        const skip = (this.page - 1) * this.limit
+        const skip = (this.page - 1) * this.limit;
 
         try {
-          const res = await axios.get(
-            `https://dummyjson.com/products?limit=${this.limit}&skip=${skip}`,
-            {
-              headers: {
-                Authorization: `Bearer ${auth.token}`,
-              },
-            }
-          )
+          const res = await api.get(`/products?limit=${this.limit}&skip=${skip}`);
 
-          this.products = res.data.products
-          this.total = res.data.total // dummyjson gives total count
+          this.products = res.data.products;
+          this.total = res.data.total;
         } catch (err: any) {
-          this.error = err.message
+          this.error = err.message;
         } finally {
-          this.isLoading = false
+          this.isLoading = false;
         }
       },
 
@@ -70,39 +63,32 @@ export const useProductStore = defineStore('product', {
           this.fetchProducts()
         }
       },
-      
+
     async fetchProductById(id: number): Promise<Product | undefined> {
-      const auth = useAuthStore()
       try {
-        const res = await axios.get<Product>(`https://dummyjson.com/products/${id}`, {
-          headers: { 'Authorization': `Bearer ${auth.token}` }
-        })
-        return res.data
+        const res = await api.get<Product>(`/products/${id}`);
+        return res.data;
       } catch (err: any) {
-        this.error = err.message
+        this.error = err.message;
       }
     },
     async addProduct(product: Product): Promise<Product | undefined> {
-      const auth = useAuthStore()
       try {
-        const res = await axios.post<Product>('https://dummyjson.com/products/add', product, {
-          headers: { 'Authorization': `Bearer ${auth.token}` }
-        })
-        this.products.push(res.data)
-        return res.data
+        const res = await api.post<Product>('/products/add', product);
+
+        this.products.unshift(res.data); // Add to top of list
+        return res.data;
+
       } catch (err: any) {
-        this.error = err.message
+        this.error = err.response?.data?.message || err.message;
       }
     },
     async deleteProduct(id: number): Promise<void> {
-      const auth = useAuthStore()
       try {
-        await axios.delete(`https://dummyjson.com/products/${id}`, {
-          headers: { 'Authorization': `Bearer ${auth.token}` }
-        })
-        this.products = this.products.filter(p => p.id !== id)
+        await api.delete(`/products/${id}`);
+        this.products = this.products.filter(p => p.id !== id);
       } catch (err: any) {
-        this.error = err.message
+        this.error = err.message;
       }
     }
   }

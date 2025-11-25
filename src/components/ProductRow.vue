@@ -1,5 +1,6 @@
 <template>
-  <tr class="border-b hover:bg-gray-50">
+  <tr class="border-b hover:bg-gray-50 cursor-pointer"
+   @click="$emit('view', product.id)">
     
     <!-- Product -->
     <td class="px-6 py-4">
