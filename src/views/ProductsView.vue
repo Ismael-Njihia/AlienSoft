@@ -21,6 +21,8 @@ onMounted(() => {
   store.fetchProducts();
 });
 
+console.log(store.products);
+
 const currentPage = computed(() => store.page)
 const totalPages = computed(() => Math.ceil(store.total / store.limit))
 
@@ -38,36 +40,37 @@ function goToPage(page) {
 }
 
 
-const filteredList = computed(() => {
-  return store.products
-    .filter(p =>
-      p.title.toLowerCase().includes(search.value.toLowerCase())
-    )
-    .filter(p => (category.value === "All" ? true : p.category === category.value))
-    .filter(p => {
-      if (stock.value === "All") return true;
-      if (stock.value === "In Stock") return p.stock > 0;
-      if (stock.value === "Low Stock") return p.stock > 0 && p.stock < 20;
-      if (stock.value === "Out of Stock") return p.stock === 0;
-    });
-});
+  const filteredList = computed(() => {
+    return store.products
+      // Search filter
+      .filter(p =>
+        p.title.toLowerCase().includes(search.value.toLowerCase())
+      )
+
+      // Category filter
+      .filter(p =>
+        category.value === "All" ? true : p.category === category.value
+      )
+
+      // Stock filter
+      .filter(p => {
+        if (stock.value === "All") return true;
+        if (stock.value === "In Stock") return p.stock > 0;
+        if (stock.value === "Low Stock") return p.stock > 0 && p.stock < 20;
+        if (stock.value === "Out of Stock") return p.stock === 0;
+      });
+  });
 
     const onSearch = val => {
     search.value = val
-    store.page = 1
-    store.fetchProducts()
     }
 
     const onCategoryFilter = val => {
     category.value = val
-    store.page = 1
-    store.fetchProducts()
     }
 
     const onStockFilter = val => {
     stock.value = val
-    store.page = 1
-    store.fetchProducts()
     }
 
 const goToAddProduct = () => {
@@ -175,7 +178,7 @@ const viewProduct = id => {
 
           <tbody>
             <ProductRow
-              v-for="product in store.products"
+              v-for="product in filteredList"
               :key="product.id"
               :product="product"
               @view="viewProduct"

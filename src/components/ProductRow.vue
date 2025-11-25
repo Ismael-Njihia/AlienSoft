@@ -8,7 +8,12 @@
         <img :src="product.thumbnail" class="w-12 h-12 rounded-lg object-cover" />
         <div>
           <p class="font-medium text-gray-800">{{ product.title }}</p>
-          <p class="text-gray-500 text-xs">{{ product.description }}</p>
+          <p class="text-gray-500 text-xs">
+          {{ product.description.length > 100 
+              ? product.description.substring(0, 100) + '…' 
+              : product.description 
+          }}
+        </p>
         </div>
       </div>
     </td>
