@@ -1,5 +1,51 @@
-# Vue 3 + TypeScript + Vite
+AlienSoft Admin Panel
+Live Demo: https://ismael-njihia.github.io/AlienSoft/
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+**FEATURES:**
+Product listing with pagination
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Product search, category filter, and stock filter
+
+View single product
+
+Add new product
+
+Pinia store for API & global state
+
+TailwindCSS UI
+
+Clean component structure
+
+**Tech Stack**
+
+Vue 3 (Composition API)
+
+Pinia
+
+Vue Router
+
+TailwindCSS
+
+Vite
+
+
+** Setup Instructions**
+_1. Clone Repo_
+git clone https://github.com/ismael-njihia/AlienSoft.git
+cd AlienSoft
+
+_2. Install Dependencies_
+npm install
+
+_3. Run Development Server_
+npm run dev
+
+_4. Build for Production_
+npm run build
+
+
+Assumptions:
+Only an admin user will use this panel.
+
+
+
